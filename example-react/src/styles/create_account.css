@@ -1,0 +1,14 @@
+.create__title {
+  color: #fff;
+  font-size: 32px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.create__btn {
+  width: 100%;
+}
+
+.create__res {
+  color: cornflowerblue;
+}

@@ -2,7 +2,7 @@
   <h3 align="center">README</h3>
   <p align="center">
     <br />
-    <a href="https://github.com/iamcombo/selendra-api"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/selendra/indra-js"><strong>Explore the docs »</strong></a>
     <br />
   </p>
 </p>
@@ -16,17 +16,17 @@ To get a local copy up and running follow these simple example steps.
 ### Installation
 * npm
   ```sh
-  npm install selendra-api
+  npm install indra-api
   ```
 * yarn
   ```sh
-  yarn add selendra-api
+  yarn add indra-api
   ```
 
 ### Usage
 * import
   ```sh
-  import { CreateAccount, ImportAccount, Transfer } from 'selendra-api';
+  import { CreateAccount, ImportAccount, Transfer } from 'indra-api';
   ```
 * Create Account
   ```

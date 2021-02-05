@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Form, Input, Switch, Select } from 'antd'
-import { ImportAccount } from 'selendra-api'
+import { ImportAccount } from 'indra-js'
 
 function ImportUserAccount() {
   const { Option } = Select;

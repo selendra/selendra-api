@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CreateAccount } from 'selendra-api';
+import { CreateAccount } from 'indra-js';
 
 import { Row, Col, Form, Select, Input, Modal, Button } from 'antd';
 import '../styles/create_account.css';
@@ -11,13 +11,16 @@ function CreateUserAccount() {
   const [pair, setPair] = useState({});
 
   const handleCreate = async(val) => {
-    const res = await CreateAccount({
+    await CreateAccount({
       username: val.username,
       type: val.type
     })
-    setMnemonic(res.mnemonic);
-    setPair(res.pair);
-    setModalVisible(true);
+    .then((res) => {
+      setMnemonic(res.mnemonic);
+      setPair(res.pair);
+      if(!mnemonic) return;
+      setModalVisible(true);
+    })
   }
 
   return (
@@ -43,14 +46,14 @@ function CreateUserAccount() {
           </Form>
         </Col>
       </Row>
-      {/* {mnemonic && pair && (
+      {mnemonic && pair && (
         <Modal title="" footer={null} visible={ModalVisible} onCancel={() => setModalVisible(false)}>
           <p>Mnemonic: <span className='create__res'>{mnemonic}</span></p>
           <p>Name: <span className='create__res'>{pair.meta.name}</span></p>
           <p>Address: <span className='create__res'>{pair.address}</span></p>
           <p>Crypto Type: <span className='create__res'>{pair.type}</span></p>
         </Modal>
-      )} */}
+      )}
     </div>
   )
 }

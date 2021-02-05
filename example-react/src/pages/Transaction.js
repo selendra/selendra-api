@@ -1,6 +1,6 @@
 import React from 'react'
 import { Form, Input, Button } from 'antd'
-import { Transfer } from 'selendra-api'
+import { Transfer } from 'indra-js'
 
 function Transaction() {
   const handleTransfer = async(val) => {

@@ -16,17 +16,17 @@ To get a local copy up and running follow these simple example steps.
 ### Installation
 * npm
   ```sh
-  npm install indra-api
+  npm install indra-js
   ```
 * yarn
   ```sh
-  yarn add indra-api
+  yarn add indra-js
   ```
 
 ### Usage
 * import
   ```sh
-  import { CreateAccount, ImportAccount, Transfer } from 'indra-api';
+  import { CreateAccount, ImportAccount, Transfer } from 'indra-js';
   ```
 * Create Account
   ```

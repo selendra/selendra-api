@@ -8,11 +8,6 @@ function Header() {
 
   return (
     <Menu mode="horizontal" selectedKeys={[location.pathname]}>
-      <Menu.Item key="/">
-        <Link to='/'>
-          Home
-        </Link>
-      </Menu.Item>
       <Menu.Item key="/transaction">
         <Link to='/transaction'>
           Transaction

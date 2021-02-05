@@ -7,7 +7,7 @@ import '../styles/create_account.css';
 function CreateUserAccount() {
   const { Option } = Select;
   const [ModalVisible, setModalVisible] = useState(false);
-  const [mnemonic, setMnemonic] = useState('');
+  const [mnemonic, setMnemonic] = useState();
   const [pair, setPair] = useState({});
 
   const handleCreate = async(val) => {
@@ -18,7 +18,6 @@ function CreateUserAccount() {
     .then((res) => {
       setMnemonic(res.mnemonic);
       setPair(res.pair);
-      if(!mnemonic) return;
       setModalVisible(true);
     })
   }
@@ -48,10 +47,15 @@ function CreateUserAccount() {
       </Row>
       {mnemonic && pair && (
         <Modal title="" footer={null} visible={ModalVisible} onCancel={() => setModalVisible(false)}>
-          <p>Mnemonic: <span className='create__res'>{mnemonic}</span></p>
-          <p>Name: <span className='create__res'>{pair.meta.name}</span></p>
-          <p>Address: <span className='create__res'>{pair.address}</span></p>
-          <p>Crypto Type: <span className='create__res'>{pair.type}</span></p>
+          {
+            pair.address && 
+            <div>
+              <p>Mnemonic: <span className='create__res'>{mnemonic}</span></p>
+              <p>Name: <span className='create__res'>{pair.meta.name}</span></p>
+              <p>Address: <span className='create__res'>{pair.address}</span></p>
+              <p>Crypto Type: <span className='create__res'>{pair.type}</span></p>
+            </div>
+          }
         </Modal>
       )}
     </div>

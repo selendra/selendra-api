@@ -1,33 +1,41 @@
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 const { Keyring } = require('@polkadot/keyring');
-const { mnemonicGenerate, mnemonicValidate } = require('@polkadot/util-crypto');
+const { mnemonicGenerate, mnemonicValidate, cryptoWaitReady } = require('@polkadot/util-crypto');
 const BigNumber = require("bignumber.js");
 
-const CreateAccount = async ({username, type}) => {
-  const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
-  const mnemonic = mnemonicGenerate(12);
+const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
 
-  if(!username) throw new Error ('username could not be null');
-  if(!type) throw new Error ('type could not be null');
-  const pair = keyring.addFromUri(mnemonic, { name: username }, type);
-  return { mnemonic, pair };
+const CreateAccount = async ({username, type}) => {
+  await cryptoWaitReady();
+  try {
+    const mnemonic = mnemonicGenerate(12);
+  
+    if(!username) throw new Error ('username could not be null');
+    if(!type) throw new Error ('type could not be null');
+    const pair = keyring.addFromUri(mnemonic, { name: username }, type);
+    return { mnemonic, pair };
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const ImportAccount = async ({seed, type}) => {
-  const keyring = new Keyring({ ss58Format: 2 });
-
-  if(mnemonicValidate(seed) === false) throw new Error ('Seed is not valid!');
-  if(!seed) throw new Error ('seed could not be null');
-  if(!type) throw new Error ('type could not be null');
-  
-  const pair = keyring.addFromUri(seed, {} ,type);
-  return { pair };
+  await cryptoWaitReady();
+  try {
+    if(mnemonicValidate(seed) === false) throw new Error ('Seed is not valid!');
+    if(!seed) throw new Error ('seed could not be null');
+    if(!type) throw new Error ('type could not be null');
+    
+    const pair = keyring.addFromUri(seed, {} ,type);
+    return { pair };
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const Transfer = async({receiverAddress, seed, amount}) => {
   const wsProvider = new WsProvider('wss://rpc-testnet.selendra.org');
   const api = await ApiPromise.create({ provider: wsProvider });
-  const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
   
   if(!seed) throw new Error ('raw seed could not be null');
   if(mnemonicValidate(seed) === false) throw new Error ('Seed is not valid!');

@@ -1,5 +1,5 @@
-export { 
+module.exports = { 
   CreateAccount,
   ImportAccount,
   Transfer
-} from './services/account';
+} = require ('./services/account');

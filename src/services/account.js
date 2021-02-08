@@ -1,7 +1,7 @@
-import { ApiPromise, WsProvider } from '@polkadot/api';
-import { Keyring } from '@polkadot/keyring';
-import { mnemonicGenerate, mnemonicValidate } from '@polkadot/util-crypto';
-import BigNumber from "bignumber.js";
+const { ApiPromise, WsProvider } = require('@polkadot/api');
+const { Keyring } = require('@polkadot/keyring');
+const { mnemonicGenerate, mnemonicValidate } = require('@polkadot/util-crypto');
+const BigNumber = require("bignumber.js");
 
 const CreateAccount = async ({username, type}) => {
   const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
@@ -9,7 +9,6 @@ const CreateAccount = async ({username, type}) => {
 
   if(!username) throw new Error ('username could not be null');
   if(!type) throw new Error ('type could not be null');
-
   const pair = keyring.addFromUri(mnemonic, { name: username }, type);
   return { mnemonic, pair };
 }
@@ -45,7 +44,7 @@ const Transfer = async({receiverAddress, seed, amount}) => {
   return { hash: hash.toHex() };
 }
 
-export { 
+module.exports = { 
   CreateAccount,
   ImportAccount,
   Transfer

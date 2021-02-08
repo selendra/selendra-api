@@ -22,22 +22,25 @@ function ImportUserAccount() {
   }
 
   return (
-    <Form onFinish={handleImport}>
-      <Form.Item name="seed">
-        <Input placeholder='Mnemonic Seed or Seed'/>
-      </Form.Item>
-      <Form.Item name='type'>
-        <Select
-          placeholder='Select Crypto Type'
-        >
-          <Option value='ed25519'>ed25519</Option>
-          <Option value='sr25519'>sr25519</Option>
-        </Select>
-      </Form.Item>
-      <Form.Item>
-        <Button htmlType='submit'>Import Account</Button>
-      </Form.Item>
-    </Form>
+    <>
+      <p className='create__title'>Import Account</p>
+      <Form onFinish={handleImport}>
+        <Form.Item name="seed">
+          <Input placeholder='Mnemonic Seed or Seed'/>
+        </Form.Item>
+        <Form.Item name='type'>
+          <Select
+            placeholder='Select Crypto Type'
+          >
+            <Option value='ed25519'>ed25519</Option>
+            <Option value='sr25519'>sr25519</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item>
+          <Button htmlType='submit'>Import Account</Button>
+        </Form.Item>
+      </Form>
+    </>
   )
 }
 

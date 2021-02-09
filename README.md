@@ -1,4 +1,4 @@
-# Indra JS
+# Indra JS
 
 ![Selendra_Polygon_SVG](https://user-images.githubusercontent.com/38589050/107327446-bc0aae80-6adf-11eb-8ba2-2c9741d1f296.png)
 

@@ -52,7 +52,7 @@ ImportAccount({
    console.log(res.pair);
 })
 ```
-*Transfer
+* Transfer
 ```js
 Transfer({
    seed,

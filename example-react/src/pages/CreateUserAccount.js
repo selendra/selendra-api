@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CreateAccount } from 'indra-js';
 
-import { Row, Col, Form, Select, Input, Modal, Button } from 'antd';
+import { Row, Col, Form, Select, Modal, Button } from 'antd';
 import '../styles/create_account.css';
 
 function CreateUserAccount() {
@@ -12,7 +12,6 @@ function CreateUserAccount() {
 
   const handleCreate = async(val) => {
     await CreateAccount({
-      username: val.username,
       type: val.type
     })
     .then((res) => {
@@ -28,9 +27,6 @@ function CreateUserAccount() {
         <Col style={{width: '100%'}}>
           <p className='create__title'>Create Account</p>
           <Form onFinish={handleCreate}>
-            <Form.Item name='username'>
-              <Input placeholder='Name'/>
-            </Form.Item>
             <Form.Item name='type'>
               <Select
                 placeholder='Select Crypto Type'
@@ -51,7 +47,6 @@ function CreateUserAccount() {
             pair.address && 
             <div>
               <p>Mnemonic: <span className='create__res'>{mnemonic}</span></p>
-              <p>Name: <span className='create__res'>{pair.meta.name}</span></p>
               <p>Address: <span className='create__res'>{pair.address}</span></p>
               <p>Crypto Type: <span className='create__res'>{pair.type}</span></p>
             </div>

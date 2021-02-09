@@ -5,14 +5,13 @@ const BigNumber = require("bignumber.js");
 
 const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
 
-const CreateAccount = async ({username, type}) => {
+const CreateAccount = async ({type}) => {
   await cryptoWaitReady();
   try {
-    const mnemonic = mnemonicGenerate(12);
-  
-    if(!username) throw new Error ('username could not be null');
     if(!type) throw new Error ('type could not be null');
-    const pair = keyring.addFromUri(mnemonic, { name: username }, type);
+    
+    const mnemonic = mnemonicGenerate(12);
+    const pair = keyring.addFromUri(mnemonic, {}, type);
     return { mnemonic, pair };
   } catch (error) {
     console.log(error);

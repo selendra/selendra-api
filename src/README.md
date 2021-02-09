@@ -1,45 +1,80 @@
-<p align="center">
-  <h3 align="center">README</h3>
-  <p align="center">
-    <br />
-    <a href="https://github.com/selendra/indra-js"><strong>Explore the docs »</strong></a>
-    <br />
-  </p>
-</p>
+
+# Indra JS
 
-<!-- GETTING STARTED -->
+![Selendra_Polygon_SVG](https://user-images.githubusercontent.com/38589050/107327446-bc0aae80-6adf-11eb-8ba2-2c9741d1f296.png)
+
+Selendra javascript SDK for intergration with selendra.
+
 ## Getting Started
+## Table of Contents
+* [Installation](#installation)
+* [Feature](#feature)
+* [Usage](#usage)
+* [User Guide](#user-guide)
+* [License](#license)
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+<a name="installation"></a>
+## Installation
+* with Npm
+```sh
+npm install indra-js
+```
+* with Yarn
+```sh
+yarn add indra-js
+```
 
-### Installation
-* npm
-  ```sh
-  npm install indra-js
-  ```
-* yarn
-  ```sh
-  yarn add indra-js
-  ```
+<a name='feature'></a>
 
-### Usage
-* import
-  ```sh
-  import { CreateAccount, ImportAccount, Transfer } from 'indra-js';
-  ```
+## Feature
+1. Create Account
+2. Import Account
+3. Transfer Balance
+
+<a name='usage'></a>
+## Usage
+* Import 
+```js
+const { CreateAccount, ImportAccount, Transfer } = require('indra-js');
+```
 * Create Account
-  ```
-  const res = await CreateAccount({ username, type });
-  console.log(res.mnemonic, res.pair);
-  ```
+```js
+CreateAccount({
+   type
+}).then((res) => {
+   console.log(res.mnemonic, res.pair);
+})
+```
 * Import Account
-  ```
-  const res = await ImportAccount({ seed, type });
-  console.log(res.pair);
-  ```
-* Transfer
-  ```
-  const res = await Transfer({ seed, receiverAddress, amount });
-  console.log(res.hash);
-  ```
+```js
+ImportAccount({
+   type
+}).then((res) => {
+   console.log(res.pair);
+})
+```
+*Transfer
+```js
+Transfer({
+   seed,
+   receiverAddress, 
+   amount
+}).then((res) => {
+   console.log(res.hash);
+})
+```
+
+<a name='user-guide'></a>
+## User Guide
+Props
+
+| Prop Name | Description  | Default Value | Example |
+| ------------- | --------------  | --------------- | ----------- |
+| type | Account keys are keys that are meant to control funds. They can be either: 'sr25519' or 'ed25519'  | sr25519 | type: 'sr25519' |
+| seed | The seed is your key to the account. Knowing the seed allows you, or anyone else who knows the seed, to re-generate and control this account.  | null | seed: '//Alice' |
+| receiverAddress | The wallet address of the receiver. | null | receiverAddress: 'Bob ' |
+| amount | Amount to send.  | null | amount: '10' |
+
+<a name='license'></a>
+## License
+MIT

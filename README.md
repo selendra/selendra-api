@@ -76,4 +76,4 @@ Props
 
 <a name='license'></a>
 ## License
-ISC
+Apache License 2.0

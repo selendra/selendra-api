@@ -23,6 +23,11 @@ function Header() {
           Import Account
         </Link>
       </Menu.Item>
+      <Menu.Item key='/contract'>
+        <Link to='/contract'>
+          Contract
+        </Link>
+      </Menu.Item>
     </Menu>
   )
 }

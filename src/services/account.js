@@ -51,7 +51,7 @@ const Transfer = async({receiverAddress, seed, amount}) => {
   return { hash: hash.toHex() };
 }
 
-module.exports = { 
+module.exports = {
   CreateAccount,
   ImportAccount,
   Transfer

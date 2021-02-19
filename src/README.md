@@ -1,6 +1,6 @@
 # Indra JS
 
-![Selendra_Polygon_SVG](https://user-images.githubusercontent.com/38589050/107327446-bc0aae80-6adf-11eb-8ba2-2c9741d1f296.png)
+![logo](https://user-images.githubusercontent.com/38589050/108470717-f6810200-72bc-11eb-99dc-47b00e008f32.png)
 
 Selendra javascript SDK for intergration with selendra.
 
@@ -29,6 +29,13 @@ yarn add indra-js
 1. Create Account
 2. Import Account
 3. Transfer Balance
+4. Transaction with ERC-20
+ * Approve
+ * Transfer
+ * TransferFrom
+ * Allowance
+ * BalanceOf
+ * Total Supply  
 
 <a name='usage'></a>
 ## Usage
@@ -62,6 +69,83 @@ Transfer({
    console.log(res.hash);
 })
 ```
+### Contract ERC-20
+* Approve
+```js
+const { Approve } = require('indra-js')
+Approve({
+   abi,
+   address, 
+   call_from,
+   spender,
+   value
+}).then((res) => {
+   console.log(res.hash);
+})
+```
+* Transfer
+```js
+const { Transfer } = require('indra-js')
+Transfer({
+   abi,
+   address, 
+   call_from,
+   to,
+   value
+}).then((res) => {
+   console.log(res.hash);
+})
+```
+* TransferFrom
+```js
+const { TransferFrom } = require('indra-js')
+TransferFrom({
+   abi,
+   address, 
+   call_from,
+   from,
+   to,
+   value
+}).then((res) => {
+   console.log(res.hash);
+})
+```
+* Allowance
+```js
+const { Allowance } = require('indra-js')
+Allowance({
+   abi,
+   address, 
+   call_from,
+   owner,
+   spender
+}).then((res) => {
+   console.log(res.allowance);
+})
+```
+* BalanceOf
+```js
+const { BalanceOf } = require('indra-js')
+BalanceOf({
+   abi,
+   address, 
+   call_from,
+   owner
+}).then((res) => {
+   console.log(res.balanceOf);
+})
+```
+* Total Supply
+```js
+const { TotalSupply } = require('indra-js')
+TotalSupply({
+   abi,
+   address, 
+   call_from
+}).then((res) => {
+   console.log(res.hash);
+})
+```
 
 <a name='user-guide'></a>
 ## User Guide
@@ -73,6 +157,10 @@ Props
 | seed | The seed is your key to the account. Knowing the seed allows you, or anyone else who knows the seed, to re-generate and control this account.  | null | seed: '//Alice' |
 | receiverAddress | The wallet address of the receiver. | null | receiverAddress: 'Bob ' |
 | amount | Amount to send.  | null | amount: '10' |
+| Contract ERC-20 |
+| abi | The ABI for the WASM code. The ABI is required and stored for future operations such as sending messages.  | null | .json file |
+| address | Address of the Contract.  | null | address: 'Bob' |
+| call_from | Specify the user account to use for the contract call and fees will be deducted from this account.(Approve, Transfer, TransferFrom:  'call_from' must be a rawSeed)  | null | call_from: 'Bob' |
 
 <a name='license'></a>
 ## License

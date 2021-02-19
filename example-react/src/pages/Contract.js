@@ -1,110 +1,120 @@
-import React, { useState } from 'react'
-import { Button, Input, Modal, Upload } from 'antd'
-import { UploadOutlined } from '@ant-design/icons';
-import { TotalSupply, BalanceOf, Allowance, Approve, Transfer, TransferFrom } from 'indra-js';
+import React, { useState } from 'react';
+import { Button, Row, Col } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
+import ApproveModal from '../components/Modal/Approve';
+import TransferModal from '../components/Modal/Transfer';
+import TransferFromModal from '../components/Modal/TransferFrom';
+import AllowanceModal from '../components/Modal/Allowance';
+import BalanceOfModal from '../components/Modal/BalanceOf';
+import TotalSupplyModal from '../components/Modal/TotalSupply';
 
 export const Contract = () => {
-  const [isWASM, setIsWASM] = useState(false);
-  const [abi, setAbi] = useState({});
-  const [address, setAddress] = useState('5Heyr33xZGR2nGXHxadZLUwNXvF3wCvXcJ4ktnPhWegaB5Sm');
-
+  const [modal, setModal] = useState(false);
+  const [modalTransfer, setModalTransfer] = useState(false);
+  const [modalTransferFrom, setModalTransferFrom] = useState(false);
+  const [modalAllowance, setModalAllowance] = useState(false);
+  const [modalBalanceOf, setModalBalanceOf] = useState(false);
+  const [modalTotalSupply, setModalTotalSupply] = useState(false);
+  const [isMessage, setIsMessage] = useState(false);
+  
   const handleCancel = () => {
-    setIsWASM(false);
+    setModal(false);
+    setModalTransfer(false);
+    setModalTransferFrom(false);
+    setModalAllowance(false);
+    setModalBalanceOf(false);
+    setModalTotalSupply(false);
   }
-  const beforeUploadJson = (file) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      setAbi(reader.result);
-      console.log(JSON.parse(reader.result))
-    };
-    reader.readAsText(file);
-    return false;
-  }
-  const handleTotalSupply = () => {
-    TotalSupply({
-      abi: JSON.parse(abi),
-    })
-    .then(rs => {
-      console.log(`total supply: ${rs}`);
-    })
-  }
-
-  const handleBalanceOf = () => {
-    BalanceOf({
-      abi: JSON.parse(abi)
-    })
-    .then(rs => {
-      console.log(`balance of: ${rs}`);
-    })
-  }
-
-  const handleAllowance = () => {
-    Allowance({
-      abi: JSON.parse(abi),
-      from: '5DM3W28EeKBmZnikwoQNJg9ex5PFdJARNgtkkgTMiu5oi2hG',
-      owner: '5HVhS6Eh9XQHgdVYAuq2Bj3S3UW8dsWt2qrNa89K2TqY5Ypp',
-      spender: '5HVhS6Eh9XQHgdVYAuq2Bj3S3UW8dsWt2qrNa89K2TqY5Ypp'
-    })
-    .then(rs => {
-      console.log(`allowance: ${rs}`);
-    })
-  }
-
-  const handleApprove = () => {
-    Approve({
-      abi: JSON.parse(abi),
-      from: '0xa881b29f12c741e7a61b2635f74b01ff669cc91bccce226663c3d49156a99c7c',
-      value: '1'
-    })
-    .then(rs => {
-      console.log(`hash: ${rs}`);
-    })
-  }
-
-  const handleTransfer = () => {
-    Transfer({
-      abi: JSON.parse(abi),
-      sender: '0xa881b29f12c741e7a61b2635f74b01ff669cc91bccce226663c3d49156a99c7c',
-      to: '5DM3W28EeKBmZnikwoQNJg9ex5PFdJARNgtkkgTMiu5oi2hG',
-      value: '1'
-    })
-    .then(rs => {
-      console.log(`hash: ${rs}`);
-    })
-  }
-
-  const handleTransferFrom = () => {
-    TransferFrom({
-      abi: JSON.parse(abi),
-      sender: '0xa881b29f12c741e7a61b2635f74b01ff669cc91bccce226663c3d49156a99c7c',
-      from: '5DM3W28EeKBmZnikwoQNJg9ex5PFdJARNgtkkgTMiu5oi2hG',
-      to: '5HVhS6Eh9XQHgdVYAuq2Bj3S3UW8dsWt2qrNa89K2TqY5Ypp',
-      value: '1'
-    })
-    .then(rs => {
-      console.log(`hash: ${rs}`);
-    })
-  }
-
+  
   return (
     <div>
-      <div>
-        <Button onClick={() => setIsWASM(true)} icon={<CaretRightOutlined/>}>Messages</Button>
+      <hr />
+      <Row align='middle'>
+        <Col span={16}>
+          <span style={{color: '#fff'}}>ERC-20</span>
+        </Col>
+        <Col span={8}>
+          <Button onClick={() => setIsMessage(!isMessage)} icon={<CaretRightOutlined/>}>Messages</Button>
+        </Col>
+      </Row>
+      { isMessage && (
+      <div style={{paddingTop: '2rem'}}>
+        <Row align='middle'>
+          <Col span={12}>
+            <Button onClick={() => setModal(true)} icon={<CaretRightOutlined/>}>Exec</Button>
+          </Col>
+          <Col span={12}>
+            <span style={{color: '#fff'}}><span style={{color: '#22d1ee'}}>Approve</span> (spender: AccountId, value: u128)</span>
+          </Col>
+        </Row><br/>
+        <Row align='middle'>
+          <Col span={12}>
+            <Button onClick={() => setModalTransfer(true)} icon={<CaretRightOutlined/>}>Exec</Button>
+          </Col>
+          <Col span={12}> 
+            <span style={{color: '#fff'}}><span style={{color: '#22d1ee'}}>Transfer</span> (to: AccountId, value: u128)</span>
+          </Col>
+        </Row><br/>
+        <Row align='middle'>
+          <Col span={12}>
+            <Button onClick={() => setModalTransferFrom(true)} icon={<CaretRightOutlined/>}>Exec</Button>
+          </Col>
+          <Col span={12}>
+            <span style={{color: '#fff'}}><span style={{color: '#22d1ee'}}>TransferFrom</span> (from: AccountId, to: AccountId, value: u128)</span>
+          </Col>
+        </Row><br/>
+        <Row align='middle'>
+          <Col span={12}>
+            <Button onClick={() => setModalAllowance(true)} icon={<CaretRightOutlined/>}>Exec</Button>
+          </Col>
+          <Col span={12}> 
+            <span style={{color: '#fff'}}><span style={{color: '#22d1ee'}}>Allowance</span> (owner: AccountId, spender: AccountId)</span>
+          </Col>
+        </Row><br/>
+        <Row align='middle'>
+          <Col span={12}>
+            <Button onClick={() => setModalBalanceOf(true)} icon={<CaretRightOutlined/>}>Exec</Button>
+          </Col>
+          <Col span={12}> 
+            <span style={{color: '#fff'}}><span style={{color: '#22d1ee'}}>BalanceOf</span> (owner: AccountId)</span>
+          </Col>
+        </Row><br/>
+        <Row align='middle'>
+          <Col span={12}>
+            <Button onClick={() => setModalTotalSupply(true)} icon={<CaretRightOutlined/>}>Exec</Button>
+          </Col>
+          <Col span={12}> 
+            <span style={{color: '#fff'}}><span style={{color: '#22d1ee'}}>TotalSupply</span>()</span>
+          </Col>
+        </Row><br/>
       </div>
-      <Modal footer="" title="" visible={isWASM} onCancel={handleCancel}>
-        <br/>
-        <Input placeholder='deployment account'/>
-        <Upload maxCount={1} accept="application/json, text/plain" beforeUpload={beforeUploadJson}>
-          <Button icon={<UploadOutlined />}>Contract ABI</Button>
-        </Upload><br/>
-        <Button onClick={handleTotalSupply}>Total Supply</Button>
-        <Button onClick={handleBalanceOf}>BalanceOf</Button>
-        <Button onClick={handleAllowance}>Allowance</Button>
-        <Button onClick={handleApprove}>Approve</Button>
-        <Button onClick={handleTransfer}>Transfer</Button>
-        <Button onClick={handleTransferFrom}>Transfer From</Button>
-      </Modal>
+      )}
+      <hr/>
+      
+      <ApproveModal
+        modal={modal}
+        handleCancel={handleCancel}
+      />
+      <TransferModal 
+        modalTransfer={modalTransfer}
+        handleCancel={handleCancel}
+      />
+      <TransferFromModal 
+        modalTransferFrom={modalTransferFrom}
+        handleCancel={handleCancel}
+      />
+      <AllowanceModal 
+        modalAllowance={modalAllowance}
+        handleCancel={handleCancel}
+      />
+      <BalanceOfModal 
+        modalBalanceOf={modalBalanceOf}
+        handleCancel={handleCancel}
+      />
+      <TotalSupplyModal 
+        modalTotalSupply={modalTotalSupply}
+        handleCancel={handleCancel}
+      />
     </div>
   )
 }

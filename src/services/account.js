@@ -32,7 +32,7 @@ const ImportAccount = async ({seed, type}) => {
   }
 }
 
-const Transfer = async({receiverAddress, seed, amount}) => {
+const TransferBalance = async({receiverAddress, seed, amount}) => {
   const wsProvider = new WsProvider('wss://rpc-testnet.selendra.org');
   const api = await ApiPromise.create({ provider: wsProvider });
   
@@ -44,9 +44,9 @@ const Transfer = async({receiverAddress, seed, amount}) => {
   const senderPair = keyring.createFromUri(seed);
 
   let chainDecimals = (10 ** api.registry.chainDecimals);
-  let transferBalance = new BigNumber(amount * chainDecimals);
+  let Balance = new BigNumber(amount * chainDecimals);
 
-  const transfer = api.tx.balances.transfer(receiverAddress, transferBalance.toFixed());
+  const transfer = api.tx.balances.transfer(receiverAddress, Balance.toFixed());
   const hash = await transfer.signAndSend(senderPair);
   return { hash: hash.toHex() };
 }
@@ -54,5 +54,5 @@ const Transfer = async({receiverAddress, seed, amount}) => {
 module.exports = {
   CreateAccount,
   ImportAccount,
-  Transfer
+  TransferBalance
 };

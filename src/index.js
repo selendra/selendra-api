@@ -1,7 +1,7 @@
 module.exports = { 
   CreateAccount,
   ImportAccount,
-  Transfer,
+  TransferBalance,
 } = require('./services/account');
 
 module.exports = {

@@ -41,7 +41,7 @@ yarn add indra-js
 ## Usage
 * Import 
 ```js
-const { CreateAccount, ImportAccount, Transfer } = require('indra-js');
+const { CreateAccount, ImportAccount, TransferBalance } = require('indra-js');
 ```
 * Create Account
 ```js
@@ -59,9 +59,9 @@ ImportAccount({
    console.log(res.pair);
 })
 ```
-* Transfer
+* TransferBalance
 ```js
-Transfer({
+TransferBalance({
    seed,
    receiverAddress, 
    amount

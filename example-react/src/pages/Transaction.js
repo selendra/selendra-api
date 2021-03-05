@@ -1,10 +1,10 @@
 import React from 'react'
 import { Form, Input, Button } from 'antd'
-import { Transfer } from 'indra-js'
+import { TransferBalance } from 'indra-js'
 
 function Transaction() {
   const handleTransfer = async(val) => {
-    await Transfer({
+    await TransferBalance({
       seed: val.rawSeed, 
       receiverAddress: val.receiver, 
       amount: val.amount

@@ -5,7 +5,7 @@ const BigNumber = require("bignumber.js");
 
 const keyring = new Keyring({ type: 'sr25519', ss58Format: 2 });
 
-const CreateAccount = async ({type}) => {
+exports.CreateAccount = async ({type}) => {
   await cryptoWaitReady();
   try {
     if(!type) throw new Error ('type could not be null');
@@ -18,7 +18,21 @@ const CreateAccount = async ({type}) => {
   }
 }
 
-const ImportAccount = async ({seed, type}) => {
+exports.GetBalance = async ({address}) => {
+  try {
+    const wsProvider = new WsProvider('wss://rpc-testnet.selendra.org');
+    const api = await ApiPromise.create({ provider: wsProvider });
+    let chainDecimals = api.registry.chainDecimals;
+    const { data: balance } = await api.query.system.account(address);
+    const balances = balance.free / Math.pow(10, chainDecimals);
+
+    return { balances };
+  } catch (error) {
+    
+  }
+}
+
+exports.ImportAccount = async ({seed, type}) => {
   await cryptoWaitReady();
   try {
     if(mnemonicValidate(seed) === false) throw new Error ('Seed is not valid!');
@@ -32,7 +46,7 @@ const ImportAccount = async ({seed, type}) => {
   }
 }
 
-const TransferBalance = async({receiverAddress, seed, amount}) => {
+exports.TransferBalance = async({receiverAddress, seed, amount}) => {
   const wsProvider = new WsProvider('wss://rpc-testnet.selendra.org');
   const api = await ApiPromise.create({ provider: wsProvider });
   
@@ -50,9 +64,3 @@ const TransferBalance = async({receiverAddress, seed, amount}) => {
   const hash = await transfer.signAndSend(senderPair);
   return { hash: hash.toHex() };
 }
-
-module.exports = {
-  CreateAccount,
-  ImportAccount,
-  TransferBalance
-};

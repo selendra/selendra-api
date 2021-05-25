@@ -1,9 +1,17 @@
-const { CreateAccount, ImportAccount, Transfer } = require('indra-js');
+const { CreateAccount, GetBalance, TransferBalance } = require('indra-js');
 
-Transfer({ 
-  receiverAddress: '5DM3W28EeKBmZnikwoQNJg9ex5PFdJARNgtkkgTMiu5oi2hG', 
-  seed: 'bike shrimp click pretty erosion gaze rather rotate neither script drive resemble', 
-  amount: '10'
-}).then(res => {
-  console.log(res.hash);
-})
+// TransferBalance({ 
+//   receiverAddress: '1gkaceqUJ548ZhuSbzS9uzxcNbLJDHkhmyA2uVvrbaMgA5C', 
+//   seed: '', 
+//   amount: '10'
+// }).then(res => {
+//   console.log(res.hash);
+// })
+
+// CreateAccount({
+//   type: 'sr25519'
+// }).then(res => console.log(res.mnemonic, res.pair))
+
+GetBalance({
+  address: '14gV68QsGAEUGkcuV5JA1hx2ZFTuKJthMFfnkDyLMZyn8nnb'
+}).then(res => console.log(res.balances))

@@ -1,14 +1,28 @@
-module.exports = { 
+const { 
   CreateAccount,
   ImportAccount,
   TransferBalance,
+  GetBalance
 } = require('./services/account');
 
-module.exports = {
-  BalanceOf,
-  TotalSupply,
-  Allowance,
+const {
   Approve,
   Transfer,
-  TransferFrom
+  TransferFrom,
+  Allowance,
+  BalanceOf,
+  TotalSupply
 } = require('./services/contract');
+
+module.exports = {
+  CreateAccount,
+  GetBalance,
+  ImportAccount,
+  TransferBalance,
+  Approve,
+  Transfer,
+  TransferFrom,
+  Allowance,
+  BalanceOf,
+  TotalSupply
+}

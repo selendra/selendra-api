@@ -59,6 +59,14 @@ ImportAccount({
    console.log(res.pair);
 })
 ```
+* Get Balance
+```js
+GetBalance({
+   address
+}).then((res) => {
+   console.log(res.balances)
+})
+```
 * TransferBalance
 ```js
 TransferBalance({

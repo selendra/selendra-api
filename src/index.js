@@ -2,6 +2,7 @@ const {
   CreateAccount,
   ImportAccount,
   TransferBalance,
+  TransferBatch,
   GetBalance
 } = require('./services/account');
 
@@ -19,6 +20,7 @@ module.exports = {
   GetBalance,
   ImportAccount,
   TransferBalance,
+  TransferBatch,
   Approve,
   Transfer,
   TransferFrom,

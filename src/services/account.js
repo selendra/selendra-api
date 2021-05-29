@@ -49,18 +49,48 @@ exports.ImportAccount = async ({seed, type}) => {
 exports.TransferBalance = async({receiverAddress, seed, amount}) => {
   const wsProvider = new WsProvider('wss://rpc-testnet.selendra.org');
   const api = await ApiPromise.create({ provider: wsProvider });
+  try {
+    if(!seed) throw new Error ('raw seed could not be null');
+    if(mnemonicValidate(seed) === false) throw new Error ('Seed is not valid!');
+    if(!receiverAddress) throw new Error ('receiver address could not be null');
+    if(!amount || amount <= 0) throw new Error ('amount should be a unique value');
+
+    const senderPair = keyring.createFromUri(seed);
+
+    let chainDecimals = (10 ** api.registry.chainDecimals);
+    let Balance = new BigNumber(amount * chainDecimals);
+
+    const transfer = api.tx.balances.transfer(receiverAddress, Balance.toFixed());
+    const hash = await transfer.signAndSend(senderPair);
+    return { 
+      hash: hash.toHex(),
+    };
+  } catch(error) {
+    console.log(error)
+  }
+}
+
+exports.TransferBatch = async({seed, data}) => {
+  const wsProvider = new WsProvider('wss://rpc-testnet.selendra.org');
+  const api = await ApiPromise.create({ provider: wsProvider });
   
-  if(!seed) throw new Error ('raw seed could not be null');
-  if(mnemonicValidate(seed) === false) throw new Error ('Seed is not valid!');
-  if(!receiverAddress) throw new Error ('receiver address could not be null');
-  if(!amount || amount <= 0) throw new Error ('amount should be a unique value');
+  let chainDecimals = (10 ** api.registry.chainDecimals);
+  const trxAmount = (amount) => {
+    let Balance = new BigNumber(amount * chainDecimals);
+    return Balance.toFixed();
+  }
+  
+  // construct a list of transactions we want to batch
+  const txs = data.map((i) =>
+    api.tx.balances.transfer(i.receiverAddress, trxAmount(i.amount))
+  )
 
   const senderPair = keyring.createFromUri(seed);
-
-  let chainDecimals = (10 ** api.registry.chainDecimals);
-  let Balance = new BigNumber(amount * chainDecimals);
-
-  const transfer = api.tx.balances.transfer(receiverAddress, Balance.toFixed());
-  const hash = await transfer.signAndSend(senderPair);
-  return { hash: hash.toHex() };
+  // construct the batch and send the transactions
+  const hash = await api.tx.utility
+    .batch(txs)
+    .signAndSend(senderPair)
+  return { 
+    hash: hash.toHex(),
+  };
 }

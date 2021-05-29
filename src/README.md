@@ -28,8 +28,10 @@ yarn add indra-js
 ## Feature
 1. Create Account
 2. Import Account
-3. Transfer Balance
-4. Transaction with ERC-20
+3. Get Balance
+4. Transfer Balance
+5. Transfer Batch ( Transfer balance to many account at the same time )
+6. Transaction with ERC-20
  * Approve
  * Transfer
  * TransferFrom
@@ -73,6 +75,17 @@ TransferBalance({
    seed,
    receiverAddress, 
    amount
+}).then((res) => {
+   console.log(res.hash);
+})
+```
+* TransferBatch
+```js
+TransferBatch({
+   seed,
+   data: [
+      { receiverAddress: '', amount: '' }
+   ]
 }).then((res) => {
    console.log(res.hash);
 })

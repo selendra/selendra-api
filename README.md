@@ -1,4 +1,4 @@
-# Indra JS
+# Selendra JS
 
 ![logo](https://user-images.githubusercontent.com/38589050/108470717-f6810200-72bc-11eb-99dc-47b00e008f32.png)
 
@@ -16,11 +16,11 @@ Selendra javascript SDK for intergration with selendra.
 ## Installation
 * with Npm
 ```sh
-npm install indra-js
+npm install selendra-js
 ```
 * with Yarn
 ```sh
-yarn add indra-js
+yarn add selendra-js
 ```
 
 <a name='feature'></a>
@@ -43,7 +43,7 @@ yarn add indra-js
 ## Usage
 * Import 
 ```js
-const { CreateAccount, ImportAccount, TransferBalance } = require('indra-js');
+const { CreateAccount, ImportAccount, TransferBalance } = require('selendra-js');
 ```
 * Create Account
 ```js
@@ -93,7 +93,7 @@ TransferBatch({
 ### Contract ERC-20
 * Approve
 ```js
-const { Approve } = require('indra-js')
+const { Approve } = require('selendra-js')
 Approve({
    abi,
    address, 
@@ -106,7 +106,7 @@ Approve({
 ```
 * Transfer
 ```js
-const { Transfer } = require('indra-js')
+const { Transfer } = require('selendra-js')
 Transfer({
    abi,
    address, 
@@ -119,7 +119,7 @@ Transfer({
 ```
 * TransferFrom
 ```js
-const { TransferFrom } = require('indra-js')
+const { TransferFrom } = require('selendra-js')
 TransferFrom({
    abi,
    address, 
@@ -133,7 +133,7 @@ TransferFrom({
 ```
 * Allowance
 ```js
-const { Allowance } = require('indra-js')
+const { Allowance } = require('selendra-js')
 Allowance({
    abi,
    address, 
@@ -146,7 +146,7 @@ Allowance({
 ```
 * BalanceOf
 ```js
-const { BalanceOf } = require('indra-js')
+const { BalanceOf } = require('selendra-js')
 BalanceOf({
    abi,
    address, 
@@ -158,7 +158,7 @@ BalanceOf({
 ```
 * Total Supply
 ```js
-const { TotalSupply } = require('indra-js')
+const { TotalSupply } = require('selendra-js')
 TotalSupply({
    abi,
    address, 

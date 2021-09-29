@@ -1,6 +1,7 @@
 const selendraTypes = {
     "EvmAddress": "H160",
     "EthereumTxHash": "H256",
+    "BlockV0": "EthereumBlock",
     "BridgeChainId": "u8",
     "BridgeEvent": {
         "_enum": {

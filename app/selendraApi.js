@@ -1,4 +1,5 @@
 const selendraTypes = require('../types/selendraType');
+const { cryptoWaitReady } = require('@polkadot/util-crypto');
 const { isValidSubstrateAddress, WalletFromMnemonic } = require('./wallet')
 const API = require("@polkadot/api");
 const Web3 = require("web3")

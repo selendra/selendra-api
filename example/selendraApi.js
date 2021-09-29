@@ -1,4 +1,5 @@
 const { ethers} = require('ethers');
+const sleep = require('sleep');
 const { 
     DefaultSelendraApi, selendraTypes, SelendraApi,
     DefaultSelendraWallet,
@@ -28,18 +29,27 @@ async function checkBalance() {
 
 async function transferBlance() { 
     let api = new SelendraApi("ws://127.0.0.1:9944", selendraTypes);
-    let mnemonic = "cover october pool token actress empty violin unusual cannon agent fortune pulse";
+    let mnemonic = "0xe5be9a5092b81bca64be81d212e7f2f9eba183bb7a90954f7b76361f6edb5c0a";
     let wallet = await new DefaultSelendraWallet(mnemonic).substrateWallet();
-    let txhash = await api.transferBalance(wallet, "sets4Y16oxoHvAZeNkiefNiyWJrdAYqGqaCjduRCV1Xs9N9sX", 5);
+    let txhash = await api.transferBalance(wallet, "ses4v38o3oLrjEcMeNpDT7cNiVYRjptyyaxHGTNYmJic5PZw4", 5000);
     console.log(`transaction hash ${txhash}`);
-    process.exit(1)
+    
 }
 
 async function bindAccount() { 
     let api = new SelendraApi("ws://127.0.0.1:9944", selendraTypes);
     let mnemonic = "cover october pool token actress empty violin unusual cannon agent fortune pulse";
-    let status = await api.bindDefaultAccount(mnemonic); 
+    let status = await api.bindDefaultAccount(mnemonic, rpc = "https://rpc.testnet.selendra.org"); 
     console.log(`bind sucess: ${status}`);
 }
 
-bindAccount()
+// bindAccount()
+
+async function transferAndbind() { 
+    await transferBlance();
+    sleep.sleep(8);
+    await bindAccount();
+    process.exit(1)
+}
+
+transferAndbind()

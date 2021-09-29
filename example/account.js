@@ -5,6 +5,7 @@ const {
     isValidSubstrateAddress,
     WalletFromMnemonic,
 } = require('../api');
+const { u8aToHex } = require('@polkadot/util');
 
 async function getAccountWithDefaul() { 
     let mnemonic = "cover october pool token actress empty violin unusual cannon agent fortune pulse";
@@ -44,4 +45,12 @@ function checkVaildSubstrateAddree() {
     console.log(`address valid: ${isValid}`)
 }
 
+async function checkHex() { 
+    let mnemonic = "cover october pool token actress empty violin unusual cannon agent fortune pulse";
+    let wallet = await new WalletFromMnemonic(mnemonic, 'sr25519', 42).substrateWallet();
+    console.log(wallet.address)
+    console.log(u8aToHex(wallet.publicKey))
+    process.exit(1)
+}
 
+checkHex()

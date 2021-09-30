@@ -3,6 +3,7 @@ const { cryptoWaitReady } = require('@polkadot/util-crypto');
 const { Keyring } = require( '@polkadot/keyring');
 const API = require("@polkadot/api");
 const { ethers} = require('ethers');
+const Web3 = require('web3');
 
 class SelendraApi {
     constructor() {
@@ -32,6 +33,7 @@ class SelendraApi {
     async substrateAccount(mnemonic, keyType = 'sr25519') {
         await cryptoWaitReady();
         const keyring = new Keyring({ type: keyType, ss58Format: this.ss58Format });
+
         const subAccount = keyring.createFromUri(mnemonic);
         return subAccount;
     }
@@ -43,6 +45,7 @@ class SelendraApi {
 
     async checkSubstrateBalance(address) {
         const api = await this.substrateConnet();
+    
         const { data: balance } = await api.query.system.account(address);
         const balances = balance.free / Math.pow(10, api.registry.chainDecimals);
         return balances;
@@ -50,6 +53,7 @@ class SelendraApi {
 
     async checkEtherBalance(address) {
         const provider = await this.etherConnet();
+
         const balances = await provider.getBalance(address);
         const balance = ethers.utils.formatEther(balances);
         return balance;
@@ -57,6 +61,7 @@ class SelendraApi {
 
     async subtrateTransfer(substrateAccount, to, amount) {
         const api = await this.substrateConnet();
+
         const transferAmount = BigInt(amount * Math.pow(10, api.registry.chainDecimals));
         const transfer = api.tx.balances.transfer(to, transferAmount);
         const hash = await transfer.signAndSend(substrateAccount);
@@ -72,6 +77,22 @@ class SelendraApi {
         await createReceipt.wait();
         return createReceipt.hash;
     }
+
+    async bindAccount(substrateAccount, etherAccount) {
+        const api = await this.substrateConnet();
+        const provider = await this.etherConnet();
+
+        const ether = new ethers.Wallet(etherAccount.privateKey, provider);
+        const signature = await ether.signMessage(`Selendra evm:${ethers.utils.hexlify(substrateAccount.publicKey).slice(2)}`, etherAccount.address);
+        
+        const nonce = await api.rpc.system.accountNextIndex(substrateAccount.address);
+        const hash = await api.tx.evmAccounts
+            .claimAccount(etherAccount.address, signature)
+            .signAndSend(substrateAccount, { nonce});
+
+        return hash
+    }
 }
 
 module.exports.Api = SelendraApi;
+

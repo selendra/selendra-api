@@ -1,6 +1,6 @@
 const selendraTypes = require('../types/selendraType');
 
-module.exports.CHAINID = 97;
+module.exports.EVM_CHAINID = 97;
 module.exports.EVM_URL = "https://data-seed-prebsc-1-s1.binance.org:8545/";
 
 module.exports.ETHCHAINID = 222;

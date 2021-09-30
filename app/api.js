@@ -5,13 +5,14 @@ const API = require("@polkadot/api");
 const { ethers} = require('ethers');
 const Web3 = require('web3');
 
-class SelendraApi {
-    constructor() {
-        this.subUrl = constants.SUBURL;
-        this.type = constants.TYPES;
-        this.ss58Format = constants.SS58FORMAT;
-        this.ethUrl = constants.ETHURL;
-        this.ethchainId = constants.ETHCHAINID;
+class Api {
+    constructor(subUrl, type, ss58Format, ethUrl, ethchainId, evmchainId) {
+        this.subUrl = subUrl;
+        this.type = type;
+        this.ss58Format = ss58Format;
+        this.ethUrl = ethUrl;
+        this.ethchainId = ethchainId;
+        this.evmchainId = evmchainId;
     }
 
     async substrateConnet() {
@@ -92,7 +93,33 @@ class SelendraApi {
 
         return hash
     }
+
+    async nativeToWrap(substrateAccount, to, amount) {
+        const api = await this.substrateConnet();
+        const transferAmount = BigInt(amount * Math.pow(10, api.registry.chainDecimals));
+
+        const nonce = await api.rpc.system.accountNextIndex(substrateAccount.address);
+        const hash = await api.tx.bridgeTransfer
+            .transferNative(transferAmount, to, this.evmchainId)
+            .signAndSend(substrateAccount, { nonce});
+
+        return hash
+    }
+
 }
 
-module.exports.Api = SelendraApi;
+class developmentApi extends Api {
+    constructor() {
+        super(
+        constants.SUBURL,
+        constants.TYPES,
+        constants.SS58FORMAT,
+        constants.ETHURL,
+        constants.ETHCHAINID,
+        constants.EVM_CHAINID
+        )
+    }
+}
 
+module.exports.Api = Api;
+module.exports.developmentApi = developmentApi;

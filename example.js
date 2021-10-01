@@ -66,7 +66,7 @@ async function checkHex() {
 }
 
 
-async function etherTransfer() { 
+async function swapWrap() { 
     let api = new developmentApi();
     let mnemonic = "cover october pool token actress empty violin unusual cannon agent fortune pulse";
     
@@ -77,13 +77,3 @@ async function etherTransfer() {
     let hash = await api.wrapTOnative(account.privateKey, hex, '1000000000000000000');
     console.log(`transaction hash ${hash}`);
 }
-
-etherTransfer()
-
-// checkHex()
-// swap()
-// bindAccount()
-// substratecheckBalance()
-// ethercheckBalance() 
-// etherTransfer()
-// substrateTransfer()

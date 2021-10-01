@@ -57,6 +57,30 @@ async function swap() {
     console.log(`${hash}`);
 }
 
+async function checkHex() { 
+    let mnemonic = "inspire left what elbow armed treat staff city blast ready inform polar";
+    let api = new developmentApi();
+    let subaccount = await api.substrateAccount(mnemonic);
+    let hex = await api.getAccountHex(subaccount);
+    console.log(hex)
+}
+
+
+async function etherTransfer() { 
+    let api = new developmentApi();
+    let mnemonic = "cover october pool token actress empty violin unusual cannon agent fortune pulse";
+    
+    let account = api.etherAccount(mnemonic);
+    let subaccount = await api.substrateAccount(mnemonic);
+    let hex = await api.getAccountHex(subaccount);
+    
+    let hash = await api.wrapTOnative(account.privateKey, hex, '1000000000000000000');
+    console.log(`transaction hash ${hash}`);
+}
+
+etherTransfer()
+
+// checkHex()
 // swap()
 // bindAccount()
 // substratecheckBalance()

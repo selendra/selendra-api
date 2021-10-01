@@ -21,8 +21,6 @@
     "@polkadot/api": "^5.4.1",
     "@polkadot/util": "^7.3.1",
     "@polkadot/util-crypto": "^7.1.1",
-    "assert": "^2.0.0",
-    "ethers": "^5.4.4",
-    "sleep": "^6.3.0"
+    "ethers": "^5.4.4"
   }
 }

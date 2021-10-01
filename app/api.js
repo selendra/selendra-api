@@ -1,18 +1,22 @@
 const constants = require('./constants');
-const { cryptoWaitReady } = require('@polkadot/util-crypto');
-const { Keyring } = require( '@polkadot/keyring');
 const API = require("@polkadot/api");
+const { cryptoWaitReady } = require('@polkadot/util-crypto');
+const { u8aToHex } = require('@polkadot/util');
+const { Keyring } = require( '@polkadot/keyring');
 const { ethers} = require('ethers');
-const Web3 = require('web3');
 
 class Api {
-    constructor(subUrl, type, ss58Format, ethUrl, ethchainId, evmchainId) {
+    constructor(subUrl, type, ss58Format, ethUrl, ethchainId, evmUrl, evmchainId, bridgeConstract, bridgeid, resourceId) {
         this.subUrl = subUrl;
         this.type = type;
         this.ss58Format = ss58Format;
         this.ethUrl = ethUrl;
         this.ethchainId = ethchainId;
+        this.evmUrl = evmUrl;
         this.evmchainId = evmchainId;
+        this.bridgeConstract = bridgeConstract;
+        this.bridgeid = bridgeid;
+        this.resourceId = resourceId;
     }
 
     async substrateConnet() {
@@ -24,9 +28,9 @@ class Api {
         return api;
 	}
 
-    async etherConnet() {
+    async etherConnet(url = this.ethUrl, chainid = this.ethchainId) {
         const provider = new ethers.providers.StaticJsonRpcProvider(
-            this.ethUrl, {chainId: this.ethchainId}
+            url, {chainId: chainid}
         );
         return provider;
     }
@@ -42,6 +46,11 @@ class Api {
     etherAccount(mnemonic) {
         let ethAccount = ethers.Wallet.fromMnemonic(mnemonic);
         return ethAccount;
+    }
+
+    async getAccountHex(substrateAccount) { 
+        const accountHex = u8aToHex(substrateAccount.publicKey);
+        return accountHex; 
     }
 
     async checkSubstrateBalance(address) {
@@ -94,18 +103,38 @@ class Api {
         return hash
     }
 
-    async nativeToWrap(substrateAccount, to, amount) {
+    async nativeToWrap(substrateAccount, recipient, amount) {
         const api = await this.substrateConnet();
         const transferAmount = BigInt(amount * Math.pow(10, api.registry.chainDecimals));
 
         const nonce = await api.rpc.system.accountNextIndex(substrateAccount.address);
         const hash = await api.tx.bridgeTransfer
-            .transferNative(transferAmount, to, this.evmchainId)
+            .transferNative(transferAmount, recipient, this.evmchainId)
             .signAndSend(substrateAccount, { nonce});
 
         return hash
     }
 
+    async wrapTOnative(ethPrivatekey, recipient, amount){
+        const provider = await this.etherConnet(this.evmUrl, this.evmchainId);
+        const wallet = new ethers.Wallet(ethPrivatekey, provider);
+
+        const bridgeInstance = new ethers.Contract(
+            constants.BRIDGECONTRACT, constants.ContractABIs.Bridge.abi, wallet,
+        );
+        const data = '0x' +
+                ethers.utils.hexZeroPad(ethers.BigNumber.from(amount).toHexString(), 32).substr(2) +    // Deposit Amount        (32 bytes)
+                ethers.utils.hexZeroPad(ethers.utils.hexlify((recipient.length - 2)/2), 32).substr(2) +    // len(recipientAddress) (32 bytes)
+                recipient.substr(2);
+        const tx = await bridgeInstance.deposit(
+            this.bridgeid,
+            this.resourceId,
+            data,
+            { gasLimit: 2000000}
+        );
+
+        return tx.hash
+    }
 }
 
 class developmentApi extends Api {
@@ -116,7 +145,11 @@ class developmentApi extends Api {
         constants.SS58FORMAT,
         constants.ETHURL,
         constants.ETHCHAINID,
-        constants.EVM_CHAINID
+        constants.EVM_URL,
+        constants.EVM_CHAINID,
+        constants.BRIDGECONTRACT,
+        constants.BRIDGEID,
+        constants.RESOURDID
         )
     }
 }

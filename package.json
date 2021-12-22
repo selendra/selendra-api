@@ -18,9 +18,9 @@
   },
   "homepage": "https://github.com/selendra/selendrajs#readme",
   "dependencies": {
-    "@polkadot/api": "^5.4.1",
-    "@polkadot/util": "^7.3.1",
-    "@polkadot/util-crypto": "^7.1.1",
+    "@polkadot/api": "^6.12.1",
+    "@polkadot/util": "^8.1.2",
+    "@polkadot/util-crypto": "^8.1.2",
     "ethers": "^5.4.4"
   }
 }
